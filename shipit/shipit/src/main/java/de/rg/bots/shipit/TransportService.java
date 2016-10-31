@@ -1,18 +1,23 @@
 package de.rg.bots.shipit;
 
-import java.util.UUID;
-
-import de.rg.bots.shipit.model.Quote;
-import de.rg.bots.shipit.model.Quote.Key;
-import de.rg.bots.shipit.model.Transport;
+import de.rg.ai.shipit.BookingService;
+import de.rg.ai.shipit.IQuotationGenerator;
+import de.rg.ai.shipit.model.Quote;
+import de.rg.ai.shipit.model.Transport;
+import de.rg.ai.shipit.quotation.SimpleAdaptiveQuoteGenerator;
+import de.rg.ai.shipit.model.Quote.Key;
 
 public class TransportService {
 
-	public Quote getQuote() {
-		return new Quote(new Key(UUID.randomUUID().toString()), new Transport());
+	private final IQuotationGenerator quotationGenerator = new SimpleAdaptiveQuoteGenerator();
+
+	private final BookingService bookingService = new BookingService();
+	
+	public Quote getQuote(Transport transport) {
+		return quotationGenerator.getQuote(transport);
 	}
 
 	public void bookTransport(Key quoteKey) {
-
+		bookingService.book(quoteKey);
 	}
 }
